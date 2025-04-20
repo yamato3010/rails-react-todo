@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main, develop ]
     paths:
-      - 'frontend/**'
+      - 'backend/**'
   pull_request:
     branches: [ main, develop ]
     paths:
-      - 'frontend/**'
+      - 'backend/**'
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: ./backend
     
     services:
       postgres:
@@ -45,7 +45,7 @@ jobs:
       with:
         ruby-version: '3.4.3'
         bundler-cache: true
-        working-directory: ./frontend
+        working-directory: ./backend
     
     - name: Setup database
       run: |
