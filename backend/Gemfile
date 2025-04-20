@@ -33,6 +33,11 @@ gem 'pg'
 
 gem 'rack-cors'
 
+gem 'bcrypt'           # パスワード暗号化
+
+gem 'jwt'              # JWT認証
+
+gem 'active_model_serializers' # JSONシリアライズ
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
