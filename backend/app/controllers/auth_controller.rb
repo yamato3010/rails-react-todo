@@ -10,7 +10,7 @@ class AuthController < ApplicationController
       render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
       user_id: @user.id, name: @user.name }, status: :ok
     else
-      render json: { error: '認証できません' }, status: :unauthorized
+      render json: { error: "認証できません" }, status: :unauthorized
     end
   end
 end
