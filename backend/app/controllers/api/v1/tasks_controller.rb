@@ -1,5 +1,5 @@
 class Api::V1::TasksController < ApplicationController
-  before_action :set_task, only: [:show, :update, :destroy]
+  before_action :set_task, only: [ :show, :update, :destroy ]
 
   # GET /api/v1/tasks
   def index
@@ -49,9 +49,9 @@ class Api::V1::TasksController < ApplicationController
   def calendar
     start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.beginning_of_month
     end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today.end_of_month
-    
+
     @tasks = current_user.tasks.where(due_date: start_date.beginning_of_day..end_date.end_of_day)
-    
+
     render json: @tasks
   end
 
