@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,11 +14,19 @@ const Login: React.FC = () => {
       const response = await login({ email, password });
       localStorage.setItem('token', response.token); // トークンを保存
       alert('ログインに成功しました！');
-      navigate('/dashboard'); // ログイン後にダッシュボードへリダイレクト
+      navigate('/dashboard'); // ダッシュボードにリダイレクト
     } catch (err) {
       setError('ログインに失敗しました。メールアドレスまたはパスワードを確認してください。');
     }
   };
+
+   // トークンが存在する場合、自動的にダッシュボードにリダイレクト
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
 
   return (
     <div>
