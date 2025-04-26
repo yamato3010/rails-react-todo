@@ -10,11 +10,11 @@ Rails.application.routes.draw do
       resources :users, only: [ :show, :create, :update, :destroy ]
       resources :tasks
       post "/auth/login", to: "auth#login"
-      post "/signup", to: "api/v1/users#create"
+      get "tasks/calendar", to: "tasks#calendar"
     end
   end
-
-  get "tasks/calendar", to: "tasks#calendar"
+  post "/signup", to: "api/v1/users#create"
+  
 
   # Defines the root path route ("/")
   # root "posts#index"
