@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authorize_request, only: [:create]
-  before_action :set_user, only: [:show, :update, :destroy]
+  skip_before_action :authorize_request, only: [ :create ]
+  before_action :set_user, only: [ :show, :update, :destroy ]
 
   # GET /api/v1/users/:id
   def show
