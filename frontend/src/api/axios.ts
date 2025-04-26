@@ -25,4 +25,9 @@ export const fetchTasks = async () => {
   return response.data;
 };
 
+export const signup = async (data: { name: string; email: string; password: string; password_confirmation: string }) => {
+  const response = await apiClient.post('/users', data);
+  return response.data;
+};
+
 export default apiClient;

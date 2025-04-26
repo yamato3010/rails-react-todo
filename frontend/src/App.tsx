@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Logout from './components/Logout';
+import UserSignup from './components/UserSignup';
 
 import './App.css'
 
@@ -16,6 +17,7 @@ function App() {
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
         />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/signup" element={<UserSignup />} />
       </Routes>
     </Router>
   );
