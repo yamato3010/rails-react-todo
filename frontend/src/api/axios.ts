@@ -7,15 +7,22 @@ const apiClient = axios.create({
   },
 });
 
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const login = async (credentials: { email: string; password: string }) => {
   const response = await apiClient.post('/auth/login', credentials);
   return response.data;
 };
 
 export const fetchTasks = async () => {
-  const token = localStorage.getItem('token');
-  const response = await apiClient.get('/tasks', {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await apiClient.get('/tasks');
   return response.data;
 };
+
+export default apiClient;
