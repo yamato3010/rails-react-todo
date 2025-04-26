@@ -13,8 +13,6 @@ Rails.application.routes.draw do
       get "tasks/calendar", to: "tasks#calendar"
     end
   end
-  post "/signup", to: "api/v1/users#create"
-  
 
   # Defines the root path route ("/")
   # root "posts#index"
