@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { signup } from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserSignup: React.FC = () => {
   const [name, setName] = useState('');
@@ -8,6 +9,7 @@ const UserSignup: React.FC = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +23,9 @@ const UserSignup: React.FC = () => {
       setEmail('');
       setPassword('');
       setPasswordConfirmation('');
+      setTimeout(() => {
+        navigate('/'); // ログイン画面に遷移
+      }, 1000); // 1秒後に遷移
     } catch (err: any) {
       setError(err.response?.data?.errors?.join(', ') || 'ユーザー登録に失敗しました。');
     }
