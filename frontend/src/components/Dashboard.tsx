@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTasks } from '../api/axios';
 import TaskCalendar from './Calendar';
+import { useNavigate } from 'react-router-dom';
+import { isTokenExpired } from '../utils/auth';
 
 const Dashboard: React.FC = () => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -17,6 +20,14 @@ const Dashboard: React.FC = () => {
     };
     loadTasks();
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token || isTokenExpired(token)) {
+      localStorage.removeItem('token'); // 期限切れの場合はトークンを削除
+      navigate('/'); // ログイン画面にリダイレクト
+    }
+  }, [navigate]);
 
   return (
     <div>

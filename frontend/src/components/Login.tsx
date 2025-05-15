@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { login } from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import { isTokenExpired } from '../utils/auth';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -20,11 +21,13 @@ const Login: React.FC = () => {
     }
   };
 
-   // トークンが存在する場合、自動的にダッシュボードにリダイレクト
+    // トークンが存在しない、または期限切れの場合はログイン画面にリダイレクト
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    if (token && !isTokenExpired(token)) {
       navigate('/dashboard');
+    } else {
+      localStorage.removeItem('token'); // 期限切れの場合はトークンを削除
     }
   }, [navigate]);
 
