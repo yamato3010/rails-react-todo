@@ -25,6 +25,21 @@ export const fetchTasks = async () => {
   return response.data;
 };
 
+export const createTask = async (task: { title: string; description?: string; due_date: string; priority?: string }) => {
+  const response = await apiClient.post('/tasks', { task });
+  return response.data;
+};
+
+export const updateTask = async (id: number, task: { title?: string; description?: string; due_date?: string; completed?: boolean; priority?: string }) => {
+  const response = await apiClient.put(`/tasks/${id}`, { task });
+  return response.data;
+};
+
+export const deleteTask = async (id: number) => {
+  const response = await apiClient.delete(`/tasks/${id}`);
+  return response.data;
+};
+
 export const signup = async (data: { name: string; email: string; password: string; password_confirmation: string }) => {
   const response = await apiClient.post('/users', data);
   return response.data;
