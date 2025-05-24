@@ -95,7 +95,7 @@ const Login: React.FC = () => {
             color: '#2c3e50',
             marginBottom: '8px'
           }}>
-            タスク管理システム
+            シンプルTODOアプリ（仮）
           </h1>
           <p style={{
             margin: 0,
