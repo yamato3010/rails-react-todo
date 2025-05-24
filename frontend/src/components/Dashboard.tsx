@@ -83,22 +83,24 @@ const Dashboard: React.FC = () => {
 
   return (
     <div style={{
-      padding: '20px',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      backgroundColor: '#ecf0f1',
-      minHeight: '100vh'
+      minHeight: '100vh',
+      padding: '20px 0'
     }}>
       <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '30px',
-        padding: '20px',
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '0 20px'
       }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '30px',
+          padding: '20px',
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}>
         <h1 style={{ margin: 0, color: '#2c3e50' }}>ダッシュボード</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <span style={{ color: '#7f8c8d', fontSize: '14px' }}>
@@ -153,17 +155,18 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-        <div>
-          <TaskCalendar tasks={tasks} />
-        </div>
-        <div>
-          <TaskList
-            tasks={tasks}
-            onTaskUpdate={handleTaskUpdate}
-            onTaskCreate={handleTaskCreate}
-            onTaskDelete={handleTaskDelete}
-          />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+          <div>
+            <TaskCalendar tasks={tasks} />
+          </div>
+          <div>
+            <TaskList
+              tasks={tasks}
+              onTaskUpdate={handleTaskUpdate}
+              onTaskCreate={handleTaskCreate}
+              onTaskDelete={handleTaskDelete}
+            />
+          </div>
         </div>
       </div>
     </div>
