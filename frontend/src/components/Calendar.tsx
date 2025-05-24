@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Calendar, momentLocalizer, Event } from 'react-big-calendar';
 import moment from 'moment';
+import React, { useState } from 'react';
+import { Calendar, Event, momentLocalizer, View } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Task } from '../types/task';
 
@@ -17,6 +17,8 @@ interface TaskCalendarProps {
 
 const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [view, setView] = useState<View>('month');
+  const [date, setDate] = useState(new Date());
 
   const events: TaskEvent[] = tasks.map((task) => ({
     title: task.completed ? `✓ ${task.title}` : task.title,
@@ -28,7 +30,7 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
   const eventStyleGetter = (event: TaskEvent) => {
     const task = event.resource;
     let backgroundColor = '#3498db';
-    
+
     if (task.completed) {
       backgroundColor = '#95a5a6';
     } else {
@@ -82,10 +84,20 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
     }
   };
 
+  // カレンダーのナビゲーションハンドラー
+  const handleNavigate = (newDate: Date) => {
+    setDate(newDate);
+  };
+
+  // カレンダーのビュー変更ハンドラー
+  const handleViewChange = (newView: View) => {
+    setView(newView);
+  };
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
       <h2 style={{ margin: '0 0 20px 0', color: '#2c3e50' }}>カレンダー</h2>
-      
+
       <div style={{ marginBottom: '16px', display: 'flex', gap: '16px', fontSize: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <div style={{ width: '12px', height: '12px', backgroundColor: '#e74c3c', borderRadius: '2px' }}></div>
@@ -113,6 +125,10 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
         style={{ height: 500, backgroundColor: 'white', borderRadius: '8px', padding: '16px' }}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleSelectEvent}
+        onNavigate={handleNavigate}
+        onView={handleViewChange}
+        date={date}
+        view={view}
         messages={{
           next: '次',
           previous: '前',
@@ -166,10 +182,10 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
                 ×
               </button>
             </div>
-            
+
             <div style={{ marginBottom: '12px' }}>
               <strong style={{ color: '#2c3e50' }}>タイトル:</strong>
-              <div style={{ 
+              <div style={{
                 marginTop: '4px',
                 textDecoration: selectedTask.completed ? 'line-through' : 'none',
                 color: selectedTask.completed ? '#95a5a6' : '#2c3e50'
@@ -177,7 +193,7 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
                 {selectedTask.title}
               </div>
             </div>
-            
+
             {selectedTask.description && (
               <div style={{ marginBottom: '12px' }}>
                 <strong style={{ color: '#2c3e50' }}>説明:</strong>
@@ -186,14 +202,14 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
                 </div>
               </div>
             )}
-            
+
             <div style={{ marginBottom: '12px' }}>
               <strong style={{ color: '#2c3e50' }}>期限:</strong>
               <div style={{ marginTop: '4px', color: '#7f8c8d' }}>
                 {formatDate(selectedTask.due_date)}
               </div>
             </div>
-            
+
             <div style={{ marginBottom: '12px' }}>
               <strong style={{ color: '#2c3e50' }}>優先度:</strong>
               <span style={{
@@ -203,13 +219,13 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
                 fontSize: '12px',
                 fontWeight: 'bold',
                 color: 'white',
-                backgroundColor: selectedTask.priority === 'high' ? '#e74c3c' : 
+                backgroundColor: selectedTask.priority === 'high' ? '#e74c3c' :
                                 selectedTask.priority === 'medium' ? '#f39c12' : '#27ae60'
               }}>
                 {getPriorityText(selectedTask.priority)}
               </span>
             </div>
-            
+
             <div style={{ marginBottom: '16px' }}>
               <strong style={{ color: '#2c3e50' }}>ステータス:</strong>
               <span style={{
@@ -224,7 +240,7 @@ const TaskCalendar: React.FC<TaskCalendarProps> = ({ tasks, onTaskSelect }) => {
                 {selectedTask.completed ? '完了' : '未完了'}
               </span>
             </div>
-            
+
             <button
               onClick={handleCloseModal}
               style={{
