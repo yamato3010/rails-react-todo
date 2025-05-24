@@ -32,9 +32,14 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log('Dashboard認証チェック:', { token: token ? 'あり' : 'なし' });
+
     if (!token || isTokenExpired(token)) {
+      console.log('認証失敗 - ログイン画面にリダイレクト');
       localStorage.removeItem('token');
-      navigate('/');
+      navigate('/', { replace: true });
+    } else {
+      console.log('認証成功 - ダッシュボード表示');
     }
   }, [navigate]);
 
