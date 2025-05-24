@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchTasks } from '../api/axios';
+import { Task } from '../types/task';
+import { isTokenExpired } from '../utils/auth';
 import TaskCalendar from './Calendar';
 import TaskList from './TaskList';
-import { useNavigate } from 'react-router-dom';
-import { isTokenExpired } from '../utils/auth';
-import { Task } from '../types/task';
 
 const Dashboard: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -39,8 +39,8 @@ const Dashboard: React.FC = () => {
   }, [navigate]);
 
   const handleTaskUpdate = (updatedTask: Task) => {
-    setTasks(prevTasks => 
-      prevTasks.map(task => 
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
         task.id === updatedTask.id ? updatedTask : task
       )
     );
@@ -54,12 +54,19 @@ const Dashboard: React.FC = () => {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
   };
 
+  const handleLogout = () => {
+    if (window.confirm('ログアウトしますか？')) {
+      localStorage.removeItem('token');
+      navigate('/');
+    }
+  };
+
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100vh',
         fontSize: '18px',
         color: '#7f8c8d'
@@ -70,17 +77,17 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div style={{ 
-      padding: '20px', 
-      maxWidth: '1200px', 
+    <div style={{
+      padding: '20px',
+      maxWidth: '1200px',
       margin: '0 auto',
       backgroundColor: '#ecf0f1',
       minHeight: '100vh'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: '30px',
         padding: '20px',
         backgroundColor: 'white',
@@ -92,15 +99,33 @@ const Dashboard: React.FC = () => {
           <span style={{ color: '#7f8c8d', fontSize: '14px' }}>
             総タスク数: {tasks.length} | 完了: {tasks.filter(t => t.completed).length} | 未完了: {tasks.filter(t => !t.completed).length}
           </span>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#e74c3c',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#c0392b'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#e74c3c'}
+          >
+            ログアウト
+          </button>
         </div>
       </div>
 
       {error && (
-        <div style={{ 
-          padding: '16px', 
-          backgroundColor: '#e74c3c', 
-          color: 'white', 
-          borderRadius: '8px', 
+        <div style={{
+          padding: '16px',
+          backgroundColor: '#e74c3c',
+          color: 'white',
+          borderRadius: '8px',
           marginBottom: '20px',
           display: 'flex',
           justifyContent: 'space-between',
@@ -128,7 +153,7 @@ const Dashboard: React.FC = () => {
           <TaskCalendar tasks={tasks} />
         </div>
         <div>
-          <TaskList 
+          <TaskList
             tasks={tasks}
             onTaskUpdate={handleTaskUpdate}
             onTaskCreate={handleTaskCreate}
