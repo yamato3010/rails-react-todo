@@ -4,17 +4,20 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /api/v1/users/:id
   def show
-    render json: @user, status: :ok
+    render json: @user
   end
 
-  # POST /api/v1/users
+  # POST /signup
   def create
     @user = User.new(user_params)
     if @user.save
       token = JsonWebToken.encode(user_id: @user.id)
+      time = 24.hours.from_now
       render json: {
         token: token,
-        user: { id: @user.id, email: @user.email, name: @user.name }
+        exp: time.strftime("%m-%d-%Y %H:%M"),
+        user_id: @user.id,
+        name: @user.name
       }, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity

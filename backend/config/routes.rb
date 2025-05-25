@@ -9,13 +9,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [ :show, :create, :update, :destroy ]
       resources :tasks
+      post "/auth/login", to: "auth#login"
+      get "tasks/calendar", to: "tasks#calendar"
     end
   end
 
-  get "tasks/calendar", to: "tasks#calendar"
-
-  post "/auth/login", to: "auth#login"
-  post "/signup", to: "api/v1/users#create"
   # Defines the root path route ("/")
   # root "posts#index"
 end

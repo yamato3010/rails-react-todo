@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe 'Auth API', type: :request do
-  describe 'POST /auth/login' do
+  describe 'POST /api/v1/auth/login' do
     let!(:user) { create(:user, email: 'test@example.com', password: 'password123') }
 
     context '正しい認証情報の場合' do
       before do
-        post '/auth/login', params: { email: 'test@example.com', password: 'password123' }
+        post '/api/v1/auth/login', params: { email: 'test@example.com', password: 'password123' }
       end
 
       it '200 OKを返すこと' do
@@ -27,7 +27,7 @@ RSpec.describe 'Auth API', type: :request do
 
     context '不正な認証情報の場合' do
       before do
-        post '/auth/login', params: { email: 'test@example.com', password: 'wrong_password' }
+        post '/api/v1/auth/login', params: { email: 'test@example.com', password: 'wrong_password' }
       end
 
       it '401 Unauthorizedを返すこと' do
@@ -36,7 +36,7 @@ RSpec.describe 'Auth API', type: :request do
 
       it 'エラーメッセージを返すこと' do
         json_response = JSON.parse(response.body)
-        expect(json_response['error']).to eq('認証できません')
+        expect(json_response['error']).to eq('メールアドレスまたはパスワードが間違っています')
       end
     end
   end
