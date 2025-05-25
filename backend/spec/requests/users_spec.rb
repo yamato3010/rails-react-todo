@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Users', type: :request do
-  describe 'POST /signup' do
+  describe 'POST /api/v1/users' do
     let(:valid_attributes) {
       { name: 'New User', email: 'newuser@example.com', password: 'password123' }
     }
@@ -9,17 +9,17 @@ RSpec.describe 'Api::V1::Users', type: :request do
     context '有効なパラメータの場合' do
       it 'ユーザーを作成すること' do
         expect {
-          post '/signup', params: valid_attributes
+          post '/api/v1/users', params: valid_attributes
         }.to change(User, :count).by(1)
       end
 
       it '201 Createdを返すこと' do
-        post '/signup', params: valid_attributes
+        post '/api/v1/users', params: valid_attributes
         expect(response).to have_http_status(201)
       end
 
       it 'JWTトークンを返すこと' do
-        post '/signup', params: valid_attributes
+        post '/api/v1/users', params: valid_attributes
         json_response = JSON.parse(response.body)
         expect(json_response['token']).not_to be_nil
       end
@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     context '無効なパラメータの場合' do
       it '422 Unprocessable Entityを返すこと' do
-        post '/signup', params: { email: 'invalid', password: '123' }
+        post '/api/v1/users', params: { email: 'invalid', password: '123' }
         expect(response).to have_http_status(422)
       end
     end
