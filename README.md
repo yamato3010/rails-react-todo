@@ -34,6 +34,12 @@
 - **Docker & Docker Compose** - コンテナ化
 - **Git** - バージョン管理
 
+### システム動作イメージ
+
+以下にログイン〜タスク作成までのシーケンス図を記載します。
+
+![](./images/sequence_addtask.png)
+
 ## スクリーンショット
 
 ![](./images/image1.png)
